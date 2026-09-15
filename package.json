@@ -1,0 +1,34 @@
+{
+  "name": "ai-se_project_mesh-ai",
+  "version": "1.0.0",
+  "description": "Mesh AI project for TripleTen bootcamp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec tsx src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tylock12/ai-se_project_mesh-ai.git"
+  },
+  "keywords": [],
+  "author": "Tymon Locklin",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/tylock12/ai-se_project_mesh-ai/issues"
+  },
+  "homepage": "https://github.com/tylock12/ai-se_project_mesh-ai#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.20.3",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}
