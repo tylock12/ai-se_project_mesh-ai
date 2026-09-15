@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --exec tsx src/index.ts"
+    "dev": "nodemon --exec tsx src/index.ts",
+    "lint": "eslint src/"
   },
   "repository": {
     "type": "git",
@@ -25,10 +26,15 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
     "@types/node": "^22.20.3",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
     "nodemon": "^3.1.14",
+    "prettier": "^3.9.6",
     "tsx": "^4.23.13",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0"
   }
 }
