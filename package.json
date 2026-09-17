@@ -1,6 +1,7 @@
 {
   "name": "ai-se_project_mesh-ai",
   "version": "1.0.0",
+  "part": "1",
   "description": "Mesh AI project for TripleTen bootcamp.",
   "main": "index.js",
   "scripts": {
@@ -38,3 +39,4 @@
     "typescript-eslint": "^8.70.0"
   }
 }
+
