@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
-export const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
+export const notFoundHandler = (req: Request, res: Response, _next: NextFunction) => {
   console.log(`Route ${req.method} ${req.path} not found`);
   res.status(404).json({
     "success": false,
@@ -9,7 +9,7 @@ export const notFoundHandler = (req: Request, res: Response, next: NextFunction)
   });
 };
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.log(`Error: ${err.message}`);
   res.status(500).json({
     "success": false,
