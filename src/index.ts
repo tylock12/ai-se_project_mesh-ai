@@ -7,7 +7,7 @@ dotenv.config();
 import mongoose from 'mongoose';
 
 const app = express();
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 
 app.get("/health", (req, res): void => {
   res.status(200).json({
@@ -26,7 +26,7 @@ app.use(router);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI as string)
   .then(() => {
     console.log('MongoDB connected');
     app.listen(port, () => console.log(`Server running on port ${port}`));

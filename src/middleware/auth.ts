@@ -11,7 +11,11 @@ export const auth = (req: Request, res: Response, next: NextFunction): void => {
 
   try {
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
+if (!token) {
+  res.status(401).json({ success: false, data: null, error: { message: 'missing or invalid authorization header' } });
+  return;
+}
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as unknown as { userId: string };
     req.user = { userId: decoded.userId };
     next();
   } catch {
