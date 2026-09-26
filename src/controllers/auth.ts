@@ -13,23 +13,60 @@ export const getCurrentUser = (req: Request, res: Response): void => {
   });
 };
 
-export const register = (req: Request, res: Response): void => {
+export const register = async (req: Request, res: Response): Promise<void> => {
+  const { email, password, name } = req.body;
+
+  if (!email || !password || !name) {
+    res.status(400).json({ success: false, data: null, error: { message: 'email, password, and name are required' } });
+    return;
+  }
+
+  if (password.length < 8) {
+    res.status(400).json({ success: false, data: null, error: { message: 'password must be at least 8 characters' } });
+    return;
+  }
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    res.status(409).json({ success: false, data: null, error: { message: 'a user with this email already exists' } });
+    return;
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.create({ email, password: hashedPassword, name });
+
   res.status(201).json({
     success: true,
-    data: {
-      userId: "user_002",
-      email: "newuser@example.com",
-      name: "Jane Doe",
-      createdAt: "2026-01-01T00:00:00Z"
-    },
-    error: null
+    data: { userId: user._id, email: user.email, name: user.name },
+    error: null,
   });
 };
 
-export const login = (req: Request, res: Response): void => {
+export const login = async (req: Request, res: Response): Promise<void> => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400).json({ success: false, data: null, error: { message: 'email and password are required' } });
+    return;
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(401).json({ success: false, data: null, error: { message: 'invalid email or password' } });
+    return;
+  }
+
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) {
+    res.status(401).json({ success: false, data: null, error: { message: 'invalid email or password' } });
+    return;
+  }
+
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string);
+
   res.status(200).json({
-   success: true,   
-   data: {},   
-   error: null 
+    success: true,
+    data: { token, user: { userId: user._id, email: user.email, name: user.name } },
+    error: null,
   });
 };
