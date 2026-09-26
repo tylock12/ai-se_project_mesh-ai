@@ -2,9 +2,12 @@ import express from "express";
 import router from "./routes/index.js";
 import { logger } from "./middleware/logger.js";
 import { notFoundHandler, errorHandler } from "./middleware/error.js";
+import dotenv from 'dotenv';
+dotenv.config();
+import mongoose from 'mongoose';
 
 const app = express();
-const port = 3000;
+const port = process.env.port || 3000;
 
 app.get("/health", (req, res): void => {
   res.status(200).json({
@@ -23,6 +26,11 @@ app.use(router);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('MongoDB connected');
+    app.listen(port, () => console.log(`Server running on port ${port}`));
+  })
+  .catch((err) => {
+    console.error('Connection error', err);
+  });
