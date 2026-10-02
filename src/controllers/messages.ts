@@ -46,8 +46,8 @@ export const createMessage = async (req: Request, res: Response): Promise<void> 
   });
   const answer = completion.choices[0]?.message?.content ?? '';
 
-  const userMessage = await Message.create({ chatId, role: 'user', content: question });
-  const assistantMessage = await Message.create({ chatId, role: 'assistant', content: answer });
+  const userMessage = await Message.create({ chatId: chat._id, role: 'user', content: question });
+  const assistantMessage = await Message.create({ chatId: chat._id, role: 'assistant', content: answer });
 
   res.status(201).json({ success: true, data: [userMessage, assistantMessage], error: null });
 };
