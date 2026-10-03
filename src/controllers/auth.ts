@@ -31,7 +31,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    res.status(409).json({ success: false, data: null, error: { message: 'a user with this email already exists' } });
+    res.status(409).json({ success: false, data: null, error: { message: 'a user with this Email already exists' } });
     return;
   }
 
