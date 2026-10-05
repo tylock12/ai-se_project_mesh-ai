@@ -1,5 +1,6 @@
 .knowledge-base {
   width: 394px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   padding: 32px 20px;
@@ -21,6 +22,25 @@
   gap: 16px;
 }
 
+.knowledge-base__doc {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 44px;
+  border-radius: 8px;
+  padding: 12px 16px;
+  gap: 10px;
+  background-color: rgba(28, 28, 28, 0.05);
+}
+
+.knowledge-base__list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+}
+
 .knowledge-base__save {
   width: 100%;
   height: 52px;
@@ -29,4 +49,10 @@
   background-color: #1c1c1c;
   color: #fff;
   font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .knowledge-base {
+    width: 670px;
+  }
 }
