@@ -28,16 +28,19 @@ export default function Chat() {
 
   return (
     <div className="chat">
-      <h2>Chats</h2>
-      {isLoadingChats ? (
-        <p>Loading chats...</p>
-      ) : (
-        <ul>
-          {chats.map((chat) => (
-            <li key={chat._id}>{chat.title}</li>
-          ))}
+      <aside className="chat__sidebar">
+        <button className="chat__new-btn" type="button">
+          + New Chat
+        </button>
+
+        {isLoadingChats && <p className="chat__sidebar-message">Loading…</p>}
+        {chatsError && <p className="chat__sidebar-message">{chatsError}</p>}
+
+        <ul className="chat__list">
+          {/*chat info coming soon*/}
         </ul>
-      )}
+      </aside>
+      <div className="chat__main">{/*message chat coming soon*/}</div>
     </div>
   );
 }
