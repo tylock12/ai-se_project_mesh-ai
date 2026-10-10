@@ -11,6 +11,21 @@ export default function Chat() {
   const [isCreatingChat, setIsCreatingChat] = useState(false);
   const [newChatTitle, setNewChatTitle] = useState("");
 
+const handleCreateChat = async () => {
+const title = newChatTitle.trim() || 'New Chat';
+try {
+ const res = await createChat(title);
+ if (res.data) {
+setIsCreatingChat(false);
+                setNewChatTitle("");
+  setChats((prev) => [res.data, ...prev]);
+setActiveChatId(res.data._id)
+ }
+} catch {
+ setChatsError("Failed to create chat");
+}
+};
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -29,13 +44,31 @@ export default function Chat() {
   return (
     <div className="chat">
       <aside className="chat__sidebar">
-        <button className="chat__new-btn" type="button">
+        <button className="chat__new-btn" type="button" onClick={() => { setIsCreatingChat(true); }}>
           + New Chat
         </button>
 
         {isLoadingChats && <p className="chat__sidebar-message">Loading…</p>}
         {chatsError && <p className="chat__sidebar-message">{chatsError}</p>}
-
+        {isCreatingChat && (
+          <input
+            className="chat__title-input"
+            type="text"
+            placeholder="Chat name"
+            value={newChatTitle}
+            onChange={(e) => {
+              setNewChatTitle(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleCreateChat();
+              if (e.key === "Escape") {
+                setIsCreatingChat(false);
+                setNewChatTitle("");
+              }
+            }}
+            autoFocus
+          />
+        )}
         <ul className="chat__list">
           {chats.map((chat) => (
             <li
@@ -46,8 +79,8 @@ export default function Chat() {
                   : "chat__item"
               }
               onClick={() => {
-                console.log("clicked", chat._id);
-                setActiveChatId(chat._id);}}
+                setActiveChatId(chat._id);
+              }}
             >
               {chat.title}
             </li>
