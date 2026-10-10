@@ -12,14 +12,24 @@
     background-color: rgba(150, 121, 217, 0.2);
 }
 
+.chat__sidebar-new-btn {
+    height: 36px;
+    border-radius: 4px;
+    padding: 8px 12px;
+    
+}
+
 .chat__new-btn {
     display: flex;
     justify-content: flex-start;
     width: 220px;
-    height: 36px;
-    padding: 8px 12px;
-    border-radius: 4px;
+    height: 44px;
+    padding: 10px 16px;
+    gap: 10px;
+    border-radius: 8px;
+    color: #fff;
     border: 1px solid rgba(150, 121, 217, 0.2);
+    background-color: rgba(28,28,28,1);
 }
 
 .chat__new-btn:hover {
@@ -30,3 +40,81 @@
     color: rgba(150, 121, 217, 1);
     background-color: rgba(150, 121, 217, 0.2);
 }
+
+.chat__messages {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   padding: 16px;
+   overflow-y: auto;
+ }
+
+ .chat__no-messages {
+    text-align: center;
+    color: #999;
+    padding: 16px;
+ }
+
+ .chat__error {
+    color: #d32f2f;
+    padding: 16px;
+ }
+
+ .chat__message_user {
+   align-self: flex-end;
+    background-color: #1c1c1c;
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 16px;
+    max-width: 70%;
+}
+
+ .chat__message_assistant {
+   align-self: flex-start;
+   /* no bubble — text flows freely */
+ }
+
+ /* Markdown elements inside assistant messages */
+
+ .chat__message_assistant p {
+   margin-bottom: 12px;
+ }
+
+ .chat__message_assistant p:last-child {
+   margin-bottom: 0;
+ }
+
+ .chat__message_assistant strong {
+   font-weight: 600;
+ }
+
+ .chat__message_assistant ul,
+ .chat__message_assistant ol {
+   padding-left: 20px;
+   margin-bottom: 12px;
+ }
+
+ .chat__message_assistant li {
+   margin-bottom: 4px;
+ }
+
+ .chat__message_assistant h1,
+ .chat__message_assistant h2,
+ .chat__message_assistant h3 {
+   font-weight: 600;
+   margin: 16px 0 8px;
+ }
+
+ .chat__message_assistant hr {
+   border: none;
+   border-bottom: 1px solid rgb(28 28 28 / 0.1);
+   margin: 16px 0;
+ }
+
+ .chat__message_assistant code {
+   font-family: ui-monospace, "Cascadia Code", "SF Mono", monospace;
+   font-size: 0.9em;
+   background: rgb(0 0 0 / 0.06);
+   padding: 2px 5px;
+   border-radius: 4px;
+ }
