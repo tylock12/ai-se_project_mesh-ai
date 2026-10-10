@@ -1,7 +1,7 @@
 import "./Chat.css";
 import { useState, useEffect } from "react";
 import { getChats, createChat } from "../../utils/api";
-import { Chat as ChatType } from "../../utils/api";
+import type { Chat as ChatType } from "../../utils/api";
 
 export default function Chat() {
   const [chats, setChats] = useState<ChatType[]>([]);
@@ -12,19 +12,19 @@ export default function Chat() {
   const [newChatTitle, setNewChatTitle] = useState("");
 
   useEffect(() => {
-  const load = async () => {
-    try {
-      const res = await getChats();
-      setChats(res.data ?? []);
-    } catch {
-      setChatsError("Failed to load chats");
-    } finally {
-     setIsLoadingChats(false);
-    }
-  };
+    const load = async () => {
+      try {
+        const res = await getChats();
+        setChats(res.data ?? []);
+      } catch {
+        setChatsError("Failed to load chats");
+      } finally {
+        setIsLoadingChats(false);
+      }
+    };
 
-  load();
-}, []);
+    load();
+  }, []);
 
   return (
     <div className="chat">
@@ -37,11 +37,24 @@ export default function Chat() {
         {chatsError && <p className="chat__sidebar-message">{chatsError}</p>}
 
         <ul className="chat__list">
-          {/*chat info coming soon*/}
+          {chats.map((chat) => (
+            <li
+              key={chat._id}
+              className={
+                chat._id === activeChatId
+                  ? "chat__item chat__item_active"
+                  : "chat__item"
+              }
+              onClick={() => {
+                console.log("clicked", chat._id);
+                setActiveChatId(chat._id);}}
+            >
+              {chat.title}
+            </li>
+          ))}
         </ul>
       </aside>
       <div className="chat__main">{/*message chat coming soon*/}</div>
     </div>
   );
 }
-

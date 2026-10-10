@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      <img src={logo} alt="Mesh AI logo" />
+      <img className="header__logo" src={logo} alt="Mesh AI logo" />
       <nav className="header__nav">
         <NavLink to="/knowledge" className={getNavLinkClass}>
           Knowledge Base

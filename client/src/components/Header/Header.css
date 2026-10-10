@@ -1,10 +1,12 @@
 .header {
     justify-content: space-between;
     display: flex;
+    padding: 1rem;
 }
 
 .header__nav {
     display: flex;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -16,6 +18,17 @@
 }
 
 .header__nav-link--active {
+    display: flex;
+    align-items: center;
     font-weight: bold;
-    color: #007bff;
+    color: inherit;
+    padding: 8px 12px;
+    border-radius: 4px;
+    height: 36px;
+    background-color: rgba(150, 121, 217, 0.2);
+}
+
+.header__logo {
+    height: 40px;
+    width: auto;
 }
