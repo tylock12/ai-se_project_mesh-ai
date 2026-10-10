@@ -1,6 +1,6 @@
 import "./Chat.css";
 import { useState, useEffect } from "react";
-import { getChats, createChat } from "../../utils/api";
+import { getChats, getChat, createChat } from "../../utils/api";
 import type { Chat as ChatType } from "../../utils/api";
 import type { Message as messageType } from "../../utils/api";
 
@@ -44,6 +44,28 @@ setActiveChatId(res.data._id)
 
     load();
   }, []);
+
+  useEffect(() => {
+  if (!activeChatId) {
+    return
+  }
+  const load = async () => {
+    console.log('activeChatId changed:', activeChatId);
+    setMessages([])
+    setMessagesError("")
+    setIsLoadingMessages(true)
+    try {
+      const res = await getChat(activeChatId);
+      setMessages(res.data?.messages || []);
+    } catch {
+      setMessagesError("Failed to load messages");
+    } finally {
+      setIsLoadingMessages(false);
+    }
+  };
+
+  load()
+}, [activeChatId])
 
   return (
     <div className="chat">
