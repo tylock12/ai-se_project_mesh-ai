@@ -2,6 +2,7 @@ import "./Chat.css";
 import { useState, useEffect } from "react";
 import { getChats, createChat } from "../../utils/api";
 import type { Chat as ChatType } from "../../utils/api";
+import type { Message as messageType } from "../../utils/api";
 
 export default function Chat() {
   const [chats, setChats] = useState<ChatType[]>([]);
@@ -10,6 +11,9 @@ export default function Chat() {
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [isCreatingChat, setIsCreatingChat] = useState(false);
   const [newChatTitle, setNewChatTitle] = useState("");
+  const [messages, setMessages] =useState<messageType[]>([]);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  const [messagesError, setMessagesError] = useState<string | null>(null);
 
 const handleCreateChat = async () => {
 const title = newChatTitle.trim() || 'New Chat';
