@@ -1,47 +1,46 @@
 import "./Chat.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useOutletContext } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import { getChats, getChat, createChat, sendMessage } from "../../utils/api";
 import type { Chat as ChatType, Message } from "../../utils/api";
-import ReactMarkdown from "react-markdown";
-import { useOutletContext } from "react-router-dom";
 
 type MobileContext = {
- isMobileMenuOpen: boolean;
- setIsMobileMenuOpen: (open: boolean) => void;
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: (open: boolean) => void;
 };
 
 export default function Chat() {
+  const { isMobileMenuOpen, setIsMobileMenuOpen } =
+    useOutletContext<MobileContext>();
+
+  // Chat list
   const [chats, setChats] = useState<ChatType[]>([]);
   const [chatsError, setChatsError] = useState<string | null>(null);
-  const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [isCreatingChat, setIsCreatingChat] = useState(false);
   const [newChatTitle, setNewChatTitle] = useState("");
+
+  // Active chat
+  const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
+
+  // Message input
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const { isMobileMenuOpen, setIsMobileMenuOpen } = useOutletContext<MobileContext>();
 
-
-  const handleCreateChat = async () => {
-    const title = newChatTitle.trim() || "New Chat";
-    try {
-      const res = await createChat(title);
-      const data = res.data;
-        if(data){
-          setChats((prev) => [data, ...prev]);
-          setActiveChatId(data._id);
-          setIsMobileMenuOpen(false);
-      }
-    } catch {
-      setChatsError("Failed to create chat");
-    }
-  };
+  // Tracks the current chat so a late reply doesn't land in the wrong chat
+  const activeChatIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const load = async () => {
+    activeChatIdRef.current = activeChatId;
+  }, [activeChatId]);
+
+  // Load the list of chats once
+  useEffect(() => {
+    const loadChats = async () => {
       try {
         const res = await getChats();
         setChats(res.data ?? []);
@@ -52,108 +51,142 @@ export default function Chat() {
       }
     };
 
-    load();
+    loadChats();
   }, []);
 
+  // Load messages whenever the active chat changes
   useEffect(() => {
-    if (!activeChatId) {
-      return;
-    }
-    const load = async () => {
+    if (!activeChatId) return;
+    let cancelled = false;
+
+    const loadMessages = async () => {
       setMessages([]);
-      setMessagesError("");
+      setMessagesError(null);
       setIsLoadingMessages(true);
       try {
         const res = await getChat(activeChatId);
-        setMessages(res.data?.messages || []);
+        if (!cancelled) setMessages(res.data?.messages ?? []);
       } catch {
-        setMessagesError("Failed to load messages");
+        if (!cancelled) setMessagesError("Failed to load messages");
       } finally {
-        setIsLoadingMessages(false);
+        if (!cancelled) setIsLoadingMessages(false);
       }
     };
 
-    load();
+    loadMessages();
+
+    return () => {
+      cancelled = true;
+    };
   }, [activeChatId]);
 
-const handleSend = async () => {
- const text = input.trim();
- if (!text || !activeChatId || isSending) return;
+  const closeNewChatInput = () => {
+    setIsCreatingChat(false);
+    setNewChatTitle("");
+  };
 
- const userMessage: Message = {
-   _id: Date.now().toString(),
-   chatId: activeChatId,
-   role: "user",
-   content: text,
-   createdAt: new Date().toISOString(),
- };
+  const handleCreateChat = async () => {
+    const title = newChatTitle.trim() || "New Chat";
+    setChatsError(null);
+    try {
+      const res = await createChat(title);
+      const newChat = res.data;
+      if (newChat) {
+        setChats((prev) => [newChat, ...prev]);
+        setActiveChatId(newChat._id);
+        closeNewChatInput();
+        setIsMobileMenuOpen(false);
+      }
+    } catch {
+      setChatsError("Failed to create chat");
+    }
+  };
 
-setMessages((prev) => [...prev, userMessage]);
-setInput("");
-setIsSending(true);
- try {
-   const res = await sendMessage(activeChatId, text);
-   if (res.data) {
-     setMessages((prev) => [...prev, res.data!]);
-   }
- } catch {
-const errorMessage: Message = {
-  _id: Date.now().toString(),
-  chatId: activeChatId,
-  role: 'assistant',
-  content: 'Something went wrong. Please try again.',
-  createdAt: new Date().toISOString(),
-};
-setMessages((prev) => [...prev, errorMessage]);
- } finally {
-   setIsSending(false);
- }
-};
+  const handleSelectChat = (chatId: string) => {
+    setActiveChatId(chatId);
+    setIsMobileMenuOpen(false);
+  };
 
-const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
- if (e.key === "Enter" && !e.shiftKey) {
-   e.preventDefault();
-   handleSend();
- }
-};
+  const handleSend = async () => {
+    const text = input.trim();
+    if (!text || !activeChatId || isSending) return;
+
+    const chatId = activeChatId;
+
+    const userMessage: Message = {
+      _id: crypto.randomUUID(),
+      chatId,
+      role: "user",
+      content: text,
+      createdAt: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsSending(true);
+
+    try {
+      const res = await sendMessage(chatId, text);
+      const reply = res.data;
+      if (reply && activeChatIdRef.current === chatId) {
+        setMessages((prev) => [...prev, reply]);
+      }
+    } catch {
+      if (activeChatIdRef.current === chatId) {
+        const errorMessage: Message = {
+          _id: crypto.randomUUID(),
+          chatId,
+          role: "assistant",
+          content: "Something went wrong. Please try again.",
+          createdAt: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      }
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleCreateChat();
+    if (e.key === "Escape") closeNewChatInput();
+  };
 
   return (
     <div className="chat">
-<aside
- className={`chat__sidebar${
-   isMobileMenuOpen ? ' chat__sidebar_open' : ''
- }`}
->        <button
+      <aside
+        className={`chat__sidebar${isMobileMenuOpen ? " chat__sidebar_open" : ""}`}
+      >
+        <button
           className="chat__sidebar-new-btn"
           type="button"
-          onClick={() => {
-            setIsCreatingChat(true);
-          }}
+          onClick={() => setIsCreatingChat(true)}
         >
           + New Chat
         </button>
 
         {isLoadingChats && <p className="chat__sidebar-message">Loading…</p>}
         {chatsError && <p className="chat__sidebar-message">{chatsError}</p>}
+
         {isCreatingChat && (
           <input
             className="chat__title-input"
             type="text"
             placeholder="Chat name"
             value={newChatTitle}
-            onChange={(e) => {
-              setNewChatTitle(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleCreateChat();
-              if (e.key === "Escape") {
-                setIsCreatingChat(false);
-                setNewChatTitle("");
-              }
-            }}
+            onChange={(e) => setNewChatTitle(e.target.value)}
+            onKeyDown={handleTitleKeyDown}
             autoFocus
           />
         )}
+
         <ul className="chat__list">
           {chats.map((chat) => (
             <li
@@ -163,9 +196,14 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
                   ? "chat__item chat__item_active"
                   : "chat__item"
               }
-              onClick={() => {
-                setActiveChatId(chat._id);
-                setIsMobileMenuOpen(false);
+              role="button"
+              tabIndex={0}
+              onClick={() => handleSelectChat(chat._id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleSelectChat(chat._id);
+                }
               }}
             >
               {chat.title}
@@ -173,8 +211,9 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
           ))}
         </ul>
       </aside>
+
       <div className="chat__main">
-        {!messagesError && !isLoadingMessages && !activeChatId && (
+        {!activeChatId && !isLoadingMessages && !messagesError && (
           <div className="chat__no-messages">
             <button
               className="chat__new-btn"
@@ -190,55 +229,54 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         )}
 
         {activeChatId && isLoadingMessages && (
-          <p className="chat__no-messages">loading message</p>
+          <p className="chat__no-messages">Loading messages…</p>
         )}
 
         {activeChatId && messagesError && (
           <div className="chat__error">{messagesError}</div>
         )}
 
-        {activeChatId &&
-          !isLoadingMessages &&
-          !messagesError &&
-           (<>
-           {messages.length > 0 ? (
-            <ul className="chat__messages">
-              {messages.map((msg) => (
-                <li
-                  key={msg._id}
-                  className={
-                    msg.role === "user"
-                      ? "chat__message chat__message_user"
-                      : "chat__message chat__message_assistant"
-                  }
-                >
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                </li>
-              ))}
-            </ul>
-           ) : <p className="chat__no-messages">no messages yet</p>}
-            <div className="chat__input-bar">
-  <textarea
-    className="chat__input"
-     value={input}
-     onChange={(e) => setInput(e.target.value)}
-     onKeyDown={handleKeyDown}
-     disabled={isSending}
- 
-    placeholder="Ask any question"
+        {activeChatId && !isLoadingMessages && !messagesError && (
+          <>
+            {messages.length > 0 ? (
+              <ul className="chat__messages">
+                {messages.map((msg) => (
+                  <li
+                    key={msg._id}
+                    className={
+                      msg.role === "user"
+                        ? "chat__message chat__message_user"
+                        : "chat__message chat__message_assistant"
+                    }
+                  >
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="chat__no-messages">No messages yet</p>
+            )}
 
-    rows={1}
-  />
-  <button
-    className="chat__send"
-    type="button"
-      onClick={() => {
-        handleSend();
-      }}
-    aria-label="Send message"
-  ></button>
-</div>
-          </>)}
+            <div className="chat__input-bar">
+              <textarea
+                className="chat__input"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleInputKeyDown}
+                disabled={isSending}
+                placeholder="Ask any question"
+                rows={1}
+              />
+              <button
+                className="chat__send"
+                type="button"
+                onClick={handleSend}
+                disabled={isSending || !input.trim()}
+                aria-label="Send message"
+              ></button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
