@@ -1,0 +1,24 @@
+.intro__cards {
+  display: flex;
+  gap: 32px;
+}
+
+.intro__card {
+    background-color: rgba(246, 243, 255, 1);
+    padding: 15px 12px;
+    border-radius: 16px;
+    height: 236px;
+}
+
+button {
+  width: 77px;
+  height: 44px;
+  border-radius: 8px;
+  padding: 10px 16px;
+  gap: 10px;
+  background-color: rgba(28,28,28,1);
+  color: white;
+  font-family: "Work Sans";
+  font-weight: 500;
+  font-size: 18px;
+}

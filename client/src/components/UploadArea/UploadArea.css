@@ -23,6 +23,17 @@
   text-decoration: none;
 }
 
+.upload-area__icon {
+  margin: 0 auto 8px;
+  width: 24px;
+  height: 24px;
+  opacity: 0.5;
+}
+
+.upload-area__label:hover .upload-area__icon {
+  opacity: 1;
+}
+
 .upload-area__label svg {
   margin: 0 auto 8px;
 }

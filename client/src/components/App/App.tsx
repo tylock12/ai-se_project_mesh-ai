@@ -8,8 +8,8 @@ import Chat from "../../Pages/Chat/Chat";
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Intro />} />
       <Route element={<AppLayout />}>
-        <Route path="/" element={<Intro />} />
         <Route path="/knowledge" element={<KnowledgeBase />} />
         <Route path="/chat" element={<Chat />} />
       </Route>

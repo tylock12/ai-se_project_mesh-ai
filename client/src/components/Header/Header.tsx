@@ -27,8 +27,12 @@ export default function Header({
         className="header__menu-btn"
         aria-label="Open menu"
         onClick={() => {
-          onMenuOpen();
-        }}
+  if (isMobileMenuOpen) {
+    onMenuClose();
+  } else {
+    onMenuOpen();
+  }
+}}
       >
       <img src={menuIcon} alt="" />
       </button>
