@@ -23,8 +23,8 @@ export default function UploadArea({ onFileSelect }: Props) {
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
     >
-      <img className="upload-area__label" src={uploadIcon} alt="" />
-        
+      <label className="upload-area__label">
+        <img className="upload-area__icon" src={uploadIcon} alt="Upload icon" />
         <span>Drag and drop a PDF, or </span>
         <span className="underline">Upload</span>
         <input
@@ -33,6 +33,7 @@ export default function UploadArea({ onFileSelect }: Props) {
           className="upload-area__input"
           onChange={handleChange}
         />
+      </label>
     </div>
   );
 }

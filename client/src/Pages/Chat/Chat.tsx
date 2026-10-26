@@ -215,6 +215,7 @@ export default function Chat() {
       <div className="chat__main">
         {!activeChatId && !isLoadingMessages && !messagesError && (
           <div className="chat__no-messages">
+            <p className="chat__no-messages">Create new chat or select an existing one to start the conversation</p>
             <button
               className="chat__new-btn"
               type="button"
@@ -254,7 +255,7 @@ export default function Chat() {
                 ))}
               </ul>
             ) : (
-              <p className="chat__no-messages">No messages yet</p>
+              <p className="chat__no-messages">Create new chat or select an existing one to start the conversation</p>
             )}
 
             <div className="chat__input-bar">

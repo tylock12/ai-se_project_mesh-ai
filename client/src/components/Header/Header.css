@@ -36,11 +36,13 @@
 
 .header__menu-btn {
   display: none;
-  width: 24px;
-  height: 24px;
-  background-image: url('../../assets/Menu.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
+  width: 36px;
+  height: 36px;
+  padding: o;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
 }
 
 @media (max-width: 1200px) {

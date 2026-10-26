@@ -1,3 +1,38 @@
+.intro {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Work Sans";
+}
+
+.intro__title {
+  font-family: "Space Grotesk", Arial, sans-serif;
+   font-size: 48px;
+  font-weight: 700;
+  color: #1C1C1C;
+  margin: 0 0 40px 0;
+  position: relative;
+  padding-right: 54px; 
+}
+
+.intro__title-decoration {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 43px;
+  object-fit: contain;
+}
+
+.intro__grid {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
 .intro__cards {
   display: flex;
   gap: 32px;
@@ -10,15 +45,76 @@
     height: 236px;
 }
 
-button {
-  width: 77px;
-  height: 44px;
-  border-radius: 8px;
-  padding: 10px 16px;
-  gap: 10px;
-  background-color: rgba(28,28,28,1);
-  color: white;
-  font-family: "Work Sans";
-  font-weight: 500;
-  font-size: 18px;
+.intro__card-icon {
+  width: 106px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .intro {
+    align-items: center; 
+    text-align: center;
+    padding: 32px 16px;
+  }
+
+  .intro__title {
+    font-size: 48px;
+    margin-bottom: 32px;
+    width: auto;
+    max-width: 354px;
+    text-align: center;
+    display: inline-block;
+    padding-right: 0;
+  }
+
+  .intro__title-decoration {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 12px;
+    top: -4px;
+    transform: none;
+    right: auto;
+  }
+
+  .intro__grid {
+    flex-direction: column; 
+    gap: 12px; 
+    width: 100%;
+    max-width: 362px;
+    margin-bottom: 32px;
+    align-items: center;
+  }
+
+  .intro__card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #F6F3FF;
+    width: 362px;
+    height: 142px;
+    padding: 16px;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+
+  .intro__card-icon {
+    width: auto;
+    height: 80px;
+    margin-bottom: 0;
+    object-fit: contain;
+  }
+
+  .intro__card-text {
+    text-align: left;
+    font-size: 16px;
+    line-height: 130%;
+  }
+
+  .intro__action-container {
+    align-items: center;
+    gap: 16px;
+  }
 }
