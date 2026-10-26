@@ -1,8 +1,8 @@
 import "./Intro.css";
 import { useNavigate } from "react-router-dom";
-import icon from "../../assets/icon.png";
-import icon2 from "../../assets/icon2.png";
-import icon3 from "../../assets/icon3.png";
+import icon from "../../assets/Icon.png";
+import icon2 from "../../assets/Icon2.png";
+import icon3 from "../../assets/Icon3.png";
 
 
 export default function Intro() {

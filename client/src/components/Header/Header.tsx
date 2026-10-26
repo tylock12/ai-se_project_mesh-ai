@@ -1,7 +1,7 @@
 import "./Header.css";
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import menuIcon from "../../assets/menu.svg";
+import menuIcon from "../../assets/Menu.svg";
 
 type Props = {
   onMenuOpen: () => void;
