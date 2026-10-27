@@ -1,6 +1,6 @@
 # Mesh AI
 
-Mesh AI is a web application that lets users chat with an AI assistant and manage a knowledge base of their own documents. TODO: adjust this sentence to describe what your app actually does.
+Mesh AI is a web application that lets teams build a knowledge base from their PDF documents and chat with an AI assistant that answers questions using those documents.
 
 ## Features
 
@@ -48,10 +48,29 @@ The app runs at http://localhost:5173.
 ```bash
 cd server
 npm install
-npm start
 ```
 
-TODO: replace `npm start` with the command in `server/package.json` under `"scripts"`. If the server needs environment variables or API keys, list them here, for example: create a `.env` file in `server/` with `API_KEY=your_key_here`.
+Create a `.env` file in the `server/` folder with:
+
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=any_long_random_string
+NEBIUS_API_KEY=your_api_key
+PORT=3000
+```
+
+Then start the server in development mode:
+
+```bash
+npm run dev
+```
+
+Or build and run it for production:
+
+```bash
+npm run build
+npm start
+```
 
 ## Project Structure
 
