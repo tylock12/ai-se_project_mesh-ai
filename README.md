@@ -9,16 +9,20 @@ Mesh AI is a web application that lets users chat with an AI assistant and manag
 - **Chat:** ask the assistant questions in a chat interface
 - **Upload area:** add files through a drag-and-drop or file-picker component
 
+
 ## Tech Stack
 
 **Client**
-- React with TypeScript
+- React 19
+- TypeScript
 - Vite
 - React Router
 
 **Server**
-- TODO: e.g., Node.js and Express
-- TODO: any AI service or database you use
+- Node.js
+- Express 5
+- TypeScript
+- MongoDB integration through Mongoose
 
 ## Getting Started
 

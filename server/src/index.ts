@@ -5,6 +5,7 @@ import { notFoundHandler, errorHandler } from "./middleware/error.js";
 import dotenv from 'dotenv';
 dotenv.config();
 import mongoose from 'mongoose';
+import cors from "cors";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,6 +20,13 @@ app.get("/health", (req, res): void => {
 app.get('/test-error', (_req, _res) => {
   throw new Error('Test error');
 });
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
 app.use(logger);
 app.use(express.json());

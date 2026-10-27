@@ -13,7 +13,7 @@ export default function Intro() {
     <div className="intro">
       <h1 className="intro__title">
         Welcome to Mesh AI
-        <img className="intro__title-decoration" src={logo} alt="" ></img>
+        <img className="intro__title-decoration" src={logo} alt="Mesh AI Logo" />
       </h1>
 
       <div className="intro__cards">
