@@ -18,22 +18,20 @@ export default function Intro() {
 
       <div className="intro__cards">
         <div className="intro__card">
-           <img src={icon} alt="Documents vector" className="intro__card-icon" />
-          <p className="intro__card-text">
+<img src={icon} alt="Stack of documents" className="intro__card-icon" />          <p className="intro__card-text">
             Bring all your documents into one secure AI workspace
           </p>
         </div>
 
         <div className="intro__card">
-           <img src={icon2} alt="Documents vector" className="intro__card-icon" />
+<img src={icon2} alt="Folder with documents" className="intro__card-icon" />
           <p className="intro__card-text">
             Organize and manage the documents that power your AI
           </p>
         </div>
 
         <div className="intro__card">
-          <img src={icon3} alt="Documents vector" className="intro__card-icon" />
-            <p className="intro__card-text">
+<img src={icon3} alt="Documents with AI sparkles" className="intro__card-icon" />            <p className="intro__card-text">
               Your knowledge base, accessible through a simple chat interface            
             </p>
         </div>
@@ -44,7 +42,9 @@ export default function Intro() {
           Start by creating your Organization’s Knowledge Base
         </p>
 
-      <button onClick={() => goTo("/knowledge")}>Start</button>
+      <button className="intro__start-btn" onClick={() => goTo("/knowledge")}>
+        Start
+      </button>
     </div>
     </div>
   );

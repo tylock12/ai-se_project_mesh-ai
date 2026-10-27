@@ -10,11 +10,10 @@ export default function KnowledgeBase() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(documents);
   }, [documents]);
 
   useEffect(() => {
-    const load = async () => {
+    const loadDocuments = async () => {
       try {
         const res = await getDocuments();
         setDocuments(res.data || []);
@@ -25,7 +24,7 @@ export default function KnowledgeBase() {
       }
     };
 
-    load();
+    loadDocuments();
   }, []);
 
   const handleFileSelect = (file: File) => {
@@ -60,7 +59,7 @@ export default function KnowledgeBase() {
             {documents.map((doc) => (
               <li key={doc._id} className="knowledge-base__doc">
                 {doc.fileName}
-                <button aria-label={`Delete ${doc.fileName}`}>×</button>
+                <button className="knowledge-base__delete" type="button" aria-label={`Delete ${doc.fileName}`}>×</button>
               </li>
             ))}
           </ul>

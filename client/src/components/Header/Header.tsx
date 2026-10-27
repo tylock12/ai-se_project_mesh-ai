@@ -34,7 +34,7 @@ export default function Header({
   }
 }}
       >
-      <img src={menuIcon} alt="" />
+      <img src={menuIcon} alt="Menu icon" />
       </button>
       <img className="header__logo" src={logo} alt="Mesh AI logo" />
       <nav className={isMobileMenuOpen ? 'header__nav header__nav_mobile' : 'header__nav'}>

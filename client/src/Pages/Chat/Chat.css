@@ -66,16 +66,37 @@
 }
 
 .chat__new-btn {
-  display: flex;
-  justify-content: flex-start;
-  width: 220px;
-  height: 36px;
   padding: 10px 16px;
-  gap: 10px;
   border-radius: 8px;
+  border: none;
+  background-color: #1c1c1c;
   color: #fff;
-  border: 1px solid rgba(150, 121, 217, 0.2);
-  background-color: rgba(28, 28, 28, 1);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chat__new-btn:hover {
+  background-color: #9679d9;
+}
+
+/* Empty state: nothing selected yet */
+.chat__empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px;
+  text-align: center;
+}
+
+.chat__empty-title {
+  max-width: 480px;
+  color: #1c1c1c;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .chat__sidebar-new-btn {
@@ -89,10 +110,6 @@
   font-family: "Work Sans", Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
-}
-
-.chat__new-btn:hover {
-  background-color: rgba(150, 121, 217, 0.2);
 }
 
 /* Messages */

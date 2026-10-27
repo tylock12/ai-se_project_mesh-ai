@@ -29,42 +29,25 @@ export type ApiResponse<T> = {
   error: { message: string } | null;
 };
 
+
+const API_URL = "http://localhost:3000";
+
 export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
-  await delay(700);
-  return {
-    success: true,
-    data: [
-      {
-        _id: "1",
-        title: "Code Review Guidelines",
-        fileName: "code-review-guidelines.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "2",
-        title: "API Reference",
-        fileName: "api-reference.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "3",
-        title: "Onboarding Guide",
-        fileName: "onboarding-guide.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "4",
-        title: "Code of Conduct",
-        fileName: "code_of_conduct.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-    ],
-    error: null,
-  };
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_URL}/documents`, {
+    headers: {
+      Authorization: `Bearer ${token ?? ""}`,
+    },
+  });
+
+  const result: ApiResponse<KnowledgeDoc[]> = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error?.message ?? "Failed to load documents.");
+  }
+
+  return result;
 };
 
 export const getChats = async (): Promise<ApiResponse<Chat[]>> => {

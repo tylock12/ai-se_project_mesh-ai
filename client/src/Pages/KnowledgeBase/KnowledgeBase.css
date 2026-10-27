@@ -51,6 +51,14 @@
   font-weight: 600;
 }
 
+  .knowledge-base__delete {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background-color: #1c1c1c;
+    color: #fff;
+  }
+
 @media (min-width: 768px) {
   .knowledge-base {
     width: 670px;
