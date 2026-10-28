@@ -19,4 +19,3 @@ dist
 .env
 
 uploads/
-Run frontend and backend concurrently
