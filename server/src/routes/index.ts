@@ -14,4 +14,3 @@ router.use('/query', queryRouter);
 router.use('/users', usersRouter);
 
 export default router;
-

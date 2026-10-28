@@ -5,11 +5,20 @@ import { createEmbedding } from '../utils/embeddings.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
 import { getClient, LLM_MODEL, buildContext } from '../utils/openai-client.js';
 
-export const askQuestion = async (req: Request, res: Response): Promise<void> => {
+export const askQuestion = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   const { question } = req.body;
 
   if (!question) {
-    res.status(400).json({ success: false, data: null, error: { message: 'question is required' } });
+    res
+      .status(400)
+      .json({
+        success: false,
+        data: null,
+        error: { message: 'question is required' },
+      });
     return;
   }
 
@@ -32,7 +41,10 @@ export const askQuestion = async (req: Request, res: Response): Promise<void> =>
   const completion = await getClient().chat.completions.create({
     model: LLM_MODEL,
     messages: [
-      { role: 'system', content: `Answer the question using only the following context:\n\n${context}` },
+      {
+        role: 'system',
+        content: `Answer the question using only the following context:\n\n${context}`,
+      },
       { role: 'user', content: question },
     ],
   });

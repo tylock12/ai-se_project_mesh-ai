@@ -6,9 +6,18 @@ import Chunk from '../models/chunk.js';
 import { chunkText } from '../utils/chunk.js';
 import { createEmbedding } from '../utils/embeddings.js';
 
-export const uploadDocument = async (req: Request, res: Response): Promise<void> => {
+export const uploadDocument = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   if (!req.file) {
-    res.status(400).json({ success: false, data: null, error: { message: 'file is required' } });
+    res
+      .status(400)
+      .json({
+        success: false,
+        data: null,
+        error: { message: 'file is required' },
+      });
     return;
   }
 
@@ -23,19 +32,22 @@ export const uploadDocument = async (req: Request, res: Response): Promise<void>
     userId: req.user!.userId,
   });
 
- const chunks = chunkText(fullText);
+  const chunks = chunkText(fullText);
 
   await Promise.all(
     chunks.map(async (text) => {
       const embedding = await createEmbedding(text);
       return Chunk.create({ documentId: document._id, text, embedding });
-    })
+    }),
   );
 
   res.status(201).json({ success: true, data: document, error: null });
 };
 
-export const getDocuments = async (req: Request, res: Response): Promise<void> => {
+export const getDocuments = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   const documents = await Document.find({ userId: req.user!.userId });
   res.status(200).json({ success: true, data: documents, error: null });
 };

@@ -1,10 +1,10 @@
-import { Router } from "express";
-import { getCurrentUser } from "../controllers/user.js";
-import { auth } from "../middleware/auth.js";
+import { Router } from 'express';
+import { getCurrentUser } from '../controllers/user.js';
+import { auth } from '../middleware/auth.js';
 
 const usersRouter = Router();
 usersRouter.use(auth);
 
-usersRouter.get("/me", getCurrentUser);
+usersRouter.get('/me', getCurrentUser);
 
 export { usersRouter };
