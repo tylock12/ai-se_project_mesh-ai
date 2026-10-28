@@ -4,8 +4,8 @@ import Intro from "../../Pages/Intro/Intro";
 import AppLayout from "../AppLayout/AppLayout";
 import KnowledgeBase from "../../Pages/KnowledgeBase/KnowledgeBase";
 import Chat from "../../Pages/Chat/Chat";
-import Login from '../../Pages/Login/Login.tsx';
-import Register from '../../Pages/Register/Register.tsx';
+import Login from "../../Pages/Login/Login.tsx";
+import Register from "../../Pages/Register/Register.tsx";
 
 function App() {
   return (

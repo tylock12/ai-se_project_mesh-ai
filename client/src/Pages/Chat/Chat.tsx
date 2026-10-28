@@ -214,23 +214,23 @@ export default function Chat() {
 
       <div className="chat__main">
         {!activeChatId && !isLoadingMessages && !messagesError && (
-  <div className="chat__empty">
-    <h2 className="chat__empty-title">
-      Create a new chat or select an existing one to start the
-      conversation
-    </h2>
-    <button
-      className="chat__new-btn"
-      type="button"
-      onClick={() => {
-        setIsCreatingChat(true);
-        setIsMobileMenuOpen(true);
-      }}
-    >
-      Start New Chat
-    </button>
-  </div>
-)}
+          <div className="chat__empty">
+            <h2 className="chat__empty-title">
+              Create a new chat or select an existing one to start the
+              conversation
+            </h2>
+            <button
+              className="chat__new-btn"
+              type="button"
+              onClick={() => {
+                setIsCreatingChat(true);
+                setIsMobileMenuOpen(true);
+              }}
+            >
+              Start New Chat
+            </button>
+          </div>
+        )}
 
         {activeChatId && isLoadingMessages && (
           <p className="chat__no-messages">Loading messages…</p>
@@ -258,7 +258,10 @@ export default function Chat() {
                 ))}
               </ul>
             ) : (
-              <p className="chat__no-messages">Create new chat or select an existing one to start the conversation</p>
+              <p className="chat__no-messages">
+                Create new chat or select an existing one to start the
+                conversation
+              </p>
             )}
 
             <div className="chat__input-bar">

@@ -9,8 +9,7 @@ export default function KnowledgeBase() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-  }, [documents]);
+  useEffect(() => {}, [documents]);
 
   useEffect(() => {
     const loadDocuments = async () => {
@@ -59,7 +58,13 @@ export default function KnowledgeBase() {
             {documents.map((doc) => (
               <li key={doc._id} className="knowledge-base__doc">
                 {doc.fileName}
-                <button className="knowledge-base__delete" type="button" aria-label={`Delete ${doc.fileName}`}>×</button>
+                <button
+                  className="knowledge-base__delete"
+                  type="button"
+                  aria-label={`Delete ${doc.fileName}`}
+                >
+                  ×
+                </button>
               </li>
             ))}
           </ul>

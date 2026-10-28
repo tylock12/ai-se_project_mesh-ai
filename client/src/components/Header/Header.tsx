@@ -27,23 +27,29 @@ export default function Header({
         className="header__menu-btn"
         aria-label="Open menu"
         onClick={() => {
-  if (isMobileMenuOpen) {
-    onMenuClose();
-  } else {
-    onMenuOpen();
-  }
-}}
+          if (isMobileMenuOpen) {
+            onMenuClose();
+          } else {
+            onMenuOpen();
+          }
+        }}
       >
-      <img src={menuIcon} alt="Menu icon" />
+        <img src={menuIcon} alt="Menu icon" />
       </button>
       <img className="header__logo" src={logo} alt="Mesh AI logo" />
-      <nav className={isMobileMenuOpen ? 'header__nav header__nav_mobile' : 'header__nav'}>
-        <NavLink to="/knowledge" className={getNavLinkClass}
-        onClick={onMenuClose}>
+      <nav
+        className={
+          isMobileMenuOpen ? "header__nav header__nav_mobile" : "header__nav"
+        }
+      >
+        <NavLink
+          to="/knowledge"
+          className={getNavLinkClass}
+          onClick={onMenuClose}
+        >
           Knowledge Base
         </NavLink>
-        <NavLink to="/chat" className={getNavLinkClass}
-        onClick={onMenuClose}>
+        <NavLink to="/chat" className={getNavLinkClass} onClick={onMenuClose}>
           Chat
         </NavLink>
       </nav>
