@@ -70,6 +70,40 @@ export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
   return request<KnowledgeDoc[]>(`${BASE_URL}/documents`);
 };
 
+export const uploadDocument = async (
+  file: File,
+): Promise<ApiResponse<KnowledgeDoc>> => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const token = localStorage.getItem("auth-token") ?? "";
+
+  const res = await fetch(`${BASE_URL}/documents`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (res.status === 401) {
+    const body = await res.json().catch(() => null);
+    const message = body?.error?.message || "Invalid credentials";
+    if (localStorage.getItem("auth-token")) {
+      localStorage.removeItem("auth-token");
+      window.location.href = "/login";
+    }
+    throw new Error(message);
+  }
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message || "Upload failed");
+  }
+
+  return res.json();
+};
+
 export const getChats = async (): Promise<ApiResponse<Chat[]>> => {
   await delay(700);
   return {
