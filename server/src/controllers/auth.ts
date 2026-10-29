@@ -20,36 +20,30 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   const { email, password, name } = req.body;
 
   if (!email || !password || !name) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'email, password, and name are required' },
-      });
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'email, password, and name are required' },
+    });
     return;
   }
 
   if (password.length < 8) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'password must be at least 8 characters' },
-      });
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'password must be at least 8 characters' },
+    });
     return;
   }
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    res
-      .status(409)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'a user with this Email already exists' },
-      });
+    res.status(409).json({
+      success: false,
+      data: null,
+      error: { message: 'a user with this Email already exists' },
+    });
     return;
   }
 
@@ -67,37 +61,31 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'email and password are required' },
-      });
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'email and password are required' },
+    });
     return;
   }
 
   const user = await User.findOne({ email });
   if (!user) {
-    res
-      .status(401)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'invalid email or password' },
-      });
+    res.status(401).json({
+      success: false,
+      data: null,
+      error: { message: 'invalid email or password' },
+    });
     return;
   }
 
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) {
-    res
-      .status(401)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'invalid email or password' },
-      });
+    res.status(401).json({
+      success: false,
+      data: null,
+      error: { message: 'invalid email or password' },
+    });
     return;
   }
 

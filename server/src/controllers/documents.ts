@@ -11,13 +11,11 @@ export const uploadDocument = async (
   res: Response,
 ): Promise<void> => {
   if (!req.file) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'file is required' },
-      });
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'file is required' },
+    });
     return;
   }
 

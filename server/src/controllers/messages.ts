@@ -16,25 +16,21 @@ export const createMessage = async (
   const userId = req.user!.userId;
 
   if (!question) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'question is required' },
-      });
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'question is required' },
+    });
     return;
   }
 
   const chat = await Chat.findOne({ _id: chatId, userId });
   if (!chat) {
-    res
-      .status(404)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'chat not found' },
-      });
+    res.status(404).json({
+      success: false,
+      data: null,
+      error: { message: 'chat not found' },
+    });
     return;
   }
 
@@ -75,11 +71,9 @@ export const createMessage = async (
     content: answer,
   });
 
-  res
-    .status(201)
-    .json({
-      success: true,
-      data: [userMessage, assistantMessage],
-      error: null,
-    });
+  res.status(201).json({
+    success: true,
+    data: [userMessage, assistantMessage],
+    error: null,
+  });
 };

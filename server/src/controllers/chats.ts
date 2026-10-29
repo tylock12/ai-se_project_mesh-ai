@@ -10,13 +10,11 @@ export const createChat = async (
   const { title } = req.body;
 
   if (!title) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'title is required' },
-      });
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'title is required' },
+    });
     return;
   }
 
@@ -33,26 +31,22 @@ export const getChat = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
 
   if (!mongoose.isValidObjectId(id)) {
-    res
-      .status(404)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'chat not found' },
-      });
+    res.status(404).json({
+      success: false,
+      data: null,
+      error: { message: 'chat not found' },
+    });
     return;
   }
 
   const chat = await Chat.findOne({ _id: id, userId: req.user!.userId });
 
   if (!chat) {
-    res
-      .status(404)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'chat not found' },
-      });
+    res.status(404).json({
+      success: false,
+      data: null,
+      error: { message: 'chat not found' },
+    });
     return;
   }
 
@@ -74,13 +68,11 @@ export const deleteChat = async (
   });
 
   if (!chat) {
-    res
-      .status(404)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'chat not found' },
-      });
+    res.status(404).json({
+      success: false,
+      data: null,
+      error: { message: 'chat not found' },
+    });
     return;
   }
 

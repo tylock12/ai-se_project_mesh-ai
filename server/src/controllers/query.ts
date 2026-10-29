@@ -12,13 +12,11 @@ export const askQuestion = async (
   const { question } = req.body;
 
   if (!question) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        data: null,
-        error: { message: 'question is required' },
-      });
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'question is required' },
+    });
     return;
   }
 

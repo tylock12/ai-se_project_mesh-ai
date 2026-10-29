@@ -28,9 +28,9 @@ export const getCurrentUser = async (
   res.status(200).json({
     success: true,
     data: {
-    userId: user.id,
-    email: user.email,
-    name: user.name,
+      userId: user.id,
+      email: user.email,
+      name: user.name,
     },
     error: null,
   });

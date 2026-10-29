@@ -30,7 +30,7 @@ app.use(
 
 app.use(logger);
 app.use(express.json());
-app.use("/api", router);
+app.use('/api', router);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
