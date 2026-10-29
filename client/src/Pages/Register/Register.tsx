@@ -1,14 +1,29 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import { getNavLinkClass } from "../../utils/navLinkClass";
+import { registerUser } from "../../utils/api";
 import logo from "../../assets/logo.png";
 
 export default function Register() {
   const { values, errors, isValid, handleChange } = useFormWithValidation();
+  const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(values); // the API call comes in the next lesson
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      await registerUser(values.name, values.email, values.password);
+        navigate("/login");
+    } catch (err) {
+        setSubmitError(err instanceof Error ? err.message : "Registration failed");
+    } finally {
+        setIsSubmitting(false);
+    }
   };
 
   return (
@@ -23,7 +38,7 @@ export default function Register() {
 
           <nav className="form__nav">
             <NavLink to="/login" className={getNavLinkClass}>
-              Login
+              Register
             </NavLink>
             <NavLink to="/register" className={getNavLinkClass}>
               Register
@@ -62,10 +77,14 @@ export default function Register() {
           />
 
           <p className="form__error" aria-live="polite">
-            {errors.name || errors.email || errors.password}
+            {submitError || errors.name || errors.email || errors.password}
           </p>
 
-          <button className="form__submit" type="submit" disabled={!isValid}>
+          <button 
+            className="form__submit" 
+            type="submit" 
+            disabled={!isValid || isSubmitting}
+            >
             Register
           </button>
         </form>

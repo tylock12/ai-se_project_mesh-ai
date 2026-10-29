@@ -20,7 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Restore the session on mount if a token is saved
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("auth-token");
     if (!token) {
       setIsLoading(false);
       return;
@@ -30,10 +30,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const restoreSession = async () => {
       try {
-        const user = await getCurrentUser();
+        const user = (await getCurrentUser()).data;
         if (!cancelled) setCurrentUser(user);
       } catch {
-        localStorage.removeItem("token");
+        localStorage.removeItem("auth-token");
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -47,12 +47,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = (token: string, user: CurrentUser) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem("auth-token", token);
     setCurrentUser(user);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("auth-token");
     setCurrentUser(null);
   };
 

@@ -1,18 +1,34 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
+import { getNavLinkClass } from "../../utils/navLinkClass";
+import { loginUser } from "../../utils/api";
+import { useAuth } from "../../contexts/AuthContext";
 import logo from "../../assets/logo.png";
-
-function getNavLinkClass({ isActive }: { isActive: boolean }) {
-  // line 5
-  return isActive ? "form__link form__link_active" : "form__link";
-}
 
 export default function Login() {
   const { values, errors, isValid, handleChange } = useFormWithValidation();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(values);
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      const res = await loginUser(values.email, values.password);
+      if (res.data) {
+        login(res.data.token, res.data.user);
+        navigate("/knowledge");
+      }
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -54,10 +70,14 @@ export default function Login() {
           />
 
           <p className="form__error" aria-live="polite">
-            {errors.email || errors.password}
+            {submitError || errors.email || errors.password}
           </p>
 
-          <button className="form__submit" type="submit" disabled={!isValid}>
+          <button 
+            className="form__submit" 
+            type="submit" 
+            disabled={!isValid || isSubmitting}
+            >
             Login
           </button>
         </form>
