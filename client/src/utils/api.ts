@@ -31,7 +31,6 @@ export type ApiResponse<T> = {
   error: { message: string } | null;
 };
 
-const API_URL = "http://localhost:3000"; // leave for now, getDocuments still uses it
 const BASE_URL = "/api";
 
 export async function request<T>(
@@ -68,21 +67,7 @@ export async function request<T>(
 }
 
 export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
-  const token = localStorage.getItem("auth-token");
-
-  const response = await fetch(`${API_URL}/documents`, {
-    headers: {
-      Authorization: `Bearer ${token ?? ""}`,
-    },
-  });
-
-  const result: ApiResponse<KnowledgeDoc[]> = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.error?.message ?? "Failed to load documents.");
-  }
-
-  return result;
+  return request<KnowledgeDoc[]>(`${BASE_URL}/documents`);
 };
 
 export const getChats = async (): Promise<ApiResponse<Chat[]>> => {
