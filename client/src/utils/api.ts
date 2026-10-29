@@ -230,3 +230,7 @@ export const sendMessage = async (
     error: null,
   };
 };
+
+export const getCurrentUser = async (): Promise<never> => {
+  throw new Error("Not implemented yet");
+};
