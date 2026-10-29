@@ -1,9 +1,9 @@
-import type { Request, Response } from 'express';
-import Document from '../models/document.js';
-import Chunk from '../models/chunk.js';
-import { createEmbedding } from '../utils/embeddings.js';
-import { rankBySimilarity } from '../utils/vector-search.js';
-import { getClient, LLM_MODEL, buildContext } from '../utils/openai-client.js';
+import type { Request, Response } from "express";
+import Document from "../models/document.js";
+import Chunk from "../models/chunk.js";
+import { createEmbedding } from "../utils/embeddings.js";
+import { rankBySimilarity } from "../utils/vector-search.js";
+import { getClient, LLM_MODEL, buildContext } from "../utils/openai-client.js";
 
 export const askQuestion = async (
   req: Request,
@@ -15,13 +15,13 @@ export const askQuestion = async (
     res.status(400).json({
       success: false,
       data: null,
-      error: { message: 'question is required' },
+      error: { message: "question is required" },
     });
     return;
   }
 
   const userId = req.user!.userId;
-  const userDocs = await Document.find({ userId }, '_id');
+  const userDocs = await Document.find({ userId }, "_id");
   const docIds = userDocs.map((d) => d._id);
 
   const chunkRecords = await Chunk.find({ documentId: { $in: docIds } });
@@ -40,14 +40,14 @@ export const askQuestion = async (
     model: LLM_MODEL,
     messages: [
       {
-        role: 'system',
+        role: "system",
         content: `Answer the question using only the following context:\n\n${context}`,
       },
-      { role: 'user', content: question },
+      { role: "user", content: question },
     ],
   });
 
-  const answer = completion.choices[0]?.message?.content ?? '';
+  const answer = completion.choices[0]?.message?.content ?? "";
 
   res.status(200).json({ success: true, data: { answer }, error: null });
 };

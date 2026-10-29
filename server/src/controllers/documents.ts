@@ -1,10 +1,10 @@
-import type { Request, Response } from 'express';
-import fs from 'fs';
-import { PDFParse } from 'pdf-parse';
-import Document from '../models/document.js';
-import Chunk from '../models/chunk.js';
-import { chunkText } from '../utils/chunk.js';
-import { createEmbedding } from '../utils/embeddings.js';
+import type { Request, Response } from "express";
+import fs from "fs";
+import { PDFParse } from "pdf-parse";
+import Document from "../models/document.js";
+import Chunk from "../models/chunk.js";
+import { chunkText } from "../utils/chunk.js";
+import { createEmbedding } from "../utils/embeddings.js";
 
 export const uploadDocument = async (
   req: Request,
@@ -14,7 +14,7 @@ export const uploadDocument = async (
     res.status(400).json({
       success: false,
       data: null,
-      error: { message: 'file is required' },
+      error: { message: "file is required" },
     });
     return;
   }

@@ -1,5 +1,5 @@
-import type { Request, Response } from 'express';
-import User from '../models/user.js';
+import type { Request, Response } from "express";
+import User from "../models/user.js";
 
 export const getCurrentUser = async (
   req: Request,
@@ -9,18 +9,18 @@ export const getCurrentUser = async (
     res.status(401).json({
       success: false,
       data: null,
-      error: { message: 'Unauthorized' },
+      error: { message: "Unauthorized" },
     });
     return;
   }
 
-  const user = await User.findById(req.user.userId).select('-password');
+  const user = await User.findById(req.user.userId).select("-password");
 
   if (!user) {
     res.status(404).json({
       success: false,
       data: null,
-      error: { message: 'User not found' },
+      error: { message: "User not found" },
     });
     return;
   }

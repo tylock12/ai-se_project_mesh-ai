@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const chunkSchema = new mongoose.Schema({
   documentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Document',
+    ref: "Document",
     required: true,
   },
   text: { type: String, required: true },
@@ -11,4 +11,4 @@ const chunkSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model('Chunk', chunkSchema);
+export default mongoose.model("Chunk", chunkSchema);

@@ -1,16 +1,16 @@
-import type { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
+import type { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
 
 export const getCurrentUser = (req: Request, res: Response): void => {
   res.status(200).json({
     success: true,
     data: {
-      userId: 'user_001',
-      email: 'user@example.com',
-      name: 'John Doe',
-      createdAt: '2026-01-01T00:00:00Z',
+      userId: "user_001",
+      email: "user@example.com",
+      name: "John Doe",
+      createdAt: "2026-01-01T00:00:00Z",
     },
     error: null,
   });
@@ -23,7 +23,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(400).json({
       success: false,
       data: null,
-      error: { message: 'email, password, and name are required' },
+      error: { message: "email, password, and name are required" },
     });
     return;
   }
@@ -32,7 +32,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(400).json({
       success: false,
       data: null,
-      error: { message: 'password must be at least 8 characters' },
+      error: { message: "password must be at least 8 characters" },
     });
     return;
   }
@@ -42,7 +42,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(409).json({
       success: false,
       data: null,
-      error: { message: 'a user with this Email already exists' },
+      error: { message: "a user with this Email already exists" },
     });
     return;
   }
@@ -64,7 +64,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(400).json({
       success: false,
       data: null,
-      error: { message: 'email and password are required' },
+      error: { message: "email and password are required" },
     });
     return;
   }
@@ -74,7 +74,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(401).json({
       success: false,
       data: null,
-      error: { message: 'invalid email or password' },
+      error: { message: "invalid email or password" },
     });
     return;
   }
@@ -84,7 +84,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(401).json({
       success: false,
       data: null,
-      error: { message: 'invalid email or password' },
+      error: { message: "invalid email or password" },
     });
     return;
   }

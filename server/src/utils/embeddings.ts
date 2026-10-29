@@ -1,6 +1,6 @@
-import { getClient } from './openai-client.js';
+import { getClient } from "./openai-client.js";
 
-const EMBEDDING_MODEL = 'Qwen/Qwen3-Embedding-8B';
+const EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-8B";
 
 export const createEmbedding = async (text: string): Promise<number[]> => {
   const response = await getClient().embeddings.create({
@@ -9,7 +9,7 @@ export const createEmbedding = async (text: string): Promise<number[]> => {
   });
   const embedding = response.data[0];
   if (!embedding) {
-    throw new Error('no embedding returned from Nebius');
+    throw new Error("no embedding returned from Nebius");
   }
   return embedding.embedding;
 };

@@ -1,7 +1,7 @@
-import type { Request, Response } from 'express';
-import Chat from '../models/chat.js';
-import Message from '../models/message.js';
-import mongoose from 'mongoose';
+import type { Request, Response } from "express";
+import Chat from "../models/chat.js";
+import Message from "../models/message.js";
+import mongoose from "mongoose";
 
 export const createChat = async (
   req: Request,
@@ -13,7 +13,7 @@ export const createChat = async (
     res.status(400).json({
       success: false,
       data: null,
-      error: { message: 'title is required' },
+      error: { message: "title is required" },
     });
     return;
   }
@@ -34,7 +34,7 @@ export const getChat = async (req: Request, res: Response): Promise<void> => {
     res.status(404).json({
       success: false,
       data: null,
-      error: { message: 'chat not found' },
+      error: { message: "chat not found" },
     });
     return;
   }
@@ -45,7 +45,7 @@ export const getChat = async (req: Request, res: Response): Promise<void> => {
     res.status(404).json({
       success: false,
       data: null,
-      error: { message: 'chat not found' },
+      error: { message: "chat not found" },
     });
     return;
   }
@@ -71,7 +71,7 @@ export const deleteChat = async (
     res.status(404).json({
       success: false,
       data: null,
-      error: { message: 'chat not found' },
+      error: { message: "chat not found" },
     });
     return;
   }

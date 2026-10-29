@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from "express";
 
 export const notFoundHandler = (
   req: Request,
@@ -23,6 +23,6 @@ export const errorHandler = (
   res.status(500).json({
     success: false,
     data: null,
-    error: { message: 'An error has occurred on the server' },
+    error: { message: "An error has occurred on the server" },
   });
 };

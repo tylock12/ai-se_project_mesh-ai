@@ -1,24 +1,24 @@
-import type { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import type { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 
 export const auth = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({
       success: false,
       data: null,
-      error: { message: 'Missing or invalid authorization token' },
+      error: { message: "Missing or invalid authorization token" },
     });
     return;
   }
 
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(" ")[1];
   if (!token) {
     res.status(401).json({
       success: false,
       data: null,
-      error: { message: 'Missing or invalid authorization token' },
+      error: { message: "Missing or invalid authorization token" },
     });
     return;
   }
@@ -34,7 +34,7 @@ export const auth = (req: Request, res: Response, next: NextFunction): void => {
     res.status(401).json({
       success: false,
       data: null,
-      error: { message: 'Invalid or expired token' },
+      error: { message: "Invalid or expired token" },
     });
   }
 };

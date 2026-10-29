@@ -1,11 +1,11 @@
-import type { Request, Response } from 'express';
-import Chat from '../models/chat.js';
-import Document from '../models/document.js';
-import Chunk from '../models/chunk.js';
-import Message from '../models/message.js';
-import { createEmbedding } from '../utils/embeddings.js';
-import { rankBySimilarity } from '../utils/vector-search.js';
-import { getClient, LLM_MODEL, buildContext } from '../utils/openai-client.js';
+import type { Request, Response } from "express";
+import Chat from "../models/chat.js";
+import Document from "../models/document.js";
+import Chunk from "../models/chunk.js";
+import Message from "../models/message.js";
+import { createEmbedding } from "../utils/embeddings.js";
+import { rankBySimilarity } from "../utils/vector-search.js";
+import { getClient, LLM_MODEL, buildContext } from "../utils/openai-client.js";
 
 export const createMessage = async (
   req: Request,
@@ -19,7 +19,7 @@ export const createMessage = async (
     res.status(400).json({
       success: false,
       data: null,
-      error: { message: 'question is required' },
+      error: { message: "question is required" },
     });
     return;
   }
@@ -29,12 +29,12 @@ export const createMessage = async (
     res.status(404).json({
       success: false,
       data: null,
-      error: { message: 'chat not found' },
+      error: { message: "chat not found" },
     });
     return;
   }
 
-  const userDocs = await Document.find({ userId }, '_id');
+  const userDocs = await Document.find({ userId }, "_id");
   const docIds = userDocs.map((d) => d._id);
   const chunkRecords = await Chunk.find({ documentId: { $in: docIds } });
   const chunks = chunkRecords.map((c) => ({
@@ -52,22 +52,22 @@ export const createMessage = async (
     model: LLM_MODEL,
     messages: [
       {
-        role: 'system',
+        role: "system",
         content: `Answer the question using only the following context:\n\n${context}`,
       },
-      { role: 'user', content: question },
+      { role: "user", content: question },
     ],
   });
-  const answer = completion.choices[0]?.message?.content ?? '';
+  const answer = completion.choices[0]?.message?.content ?? "";
 
   const userMessage = await Message.create({
     chatId: chat._id,
-    role: 'user',
+    role: "user",
     content: question,
   });
   const assistantMessage = await Message.create({
     chatId: chat._id,
-    role: 'assistant',
+    role: "assistant",
     content: answer,
   });
 
