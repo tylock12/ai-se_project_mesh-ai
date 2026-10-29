@@ -73,11 +73,11 @@ export default function Login() {
             {submitError || errors.email || errors.password}
           </p>
 
-          <button 
-            className="form__submit" 
-            type="submit" 
+          <button
+            className="form__submit"
+            type="submit"
             disabled={!isValid || isSubmitting}
-            >
+          >
             Login
           </button>
         </form>

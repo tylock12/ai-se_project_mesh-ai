@@ -6,7 +6,10 @@ import KnowledgeBase from "../../Pages/KnowledgeBase/KnowledgeBase";
 import Chat from "../../Pages/Chat/Chat";
 import Login from "../../Pages/Login/Login.tsx";
 import Register from "../../Pages/Register/Register.tsx";
-import { PublicRoute, ProtectedRoute } from "../ProtectedRoute/ProtectedRoute.tsx";
+import {
+  PublicRoute,
+  ProtectedRoute,
+} from "../ProtectedRoute/ProtectedRoute.tsx";
 
 function App() {
   return (

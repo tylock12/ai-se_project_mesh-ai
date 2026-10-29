@@ -18,11 +18,13 @@ export default function Register() {
 
     try {
       await registerUser(values.name, values.email, values.password);
-        navigate("/login");
+      navigate("/login");
     } catch (err) {
-        setSubmitError(err instanceof Error ? err.message : "Registration failed");
+      setSubmitError(
+        err instanceof Error ? err.message : "Registration failed",
+      );
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -80,11 +82,11 @@ export default function Register() {
             {submitError || errors.name || errors.email || errors.password}
           </p>
 
-          <button 
-            className="form__submit" 
-            type="submit" 
+          <button
+            className="form__submit"
+            type="submit"
             disabled={!isValid || isSubmitting}
-            >
+          >
             Register
           </button>
         </form>

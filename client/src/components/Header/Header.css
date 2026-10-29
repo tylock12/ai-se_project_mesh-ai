@@ -83,7 +83,6 @@
   cursor: pointer;
 }
 
-
 @media (max-width: 1200px) {
   .header {
     justify-content: flex-start;
@@ -91,7 +90,7 @@
     border-bottom: 1px solid rgb(0 0 0 / 0.1);
   }
 
-   .header__menu {
+  .header__menu {
     position: static;
     border: none;
   }
