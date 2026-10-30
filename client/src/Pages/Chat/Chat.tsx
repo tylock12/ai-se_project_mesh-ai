@@ -31,6 +31,9 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
 
+  // Scrolling
+  const messagesEndRef = useRef<HTMLLIElement>(null);
+
   // Tracks the current chat so a late reply doesn't land in the wrong chat
   const activeChatIdRef = useRef<string | null>(null);
 
@@ -79,6 +82,10 @@ export default function Chat() {
       cancelled = true;
     };
   }, [activeChatId]);
+
+useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isSending]);
 
   const closeNewChatInput = () => {
     setIsCreatingChat(false);
@@ -264,6 +271,7 @@ export default function Chat() {
                   Thinking...
                   </li>
                 )}
+                <li ref={messagesEndRef} />
               </ul>
             ) : (
               <p className="chat__no-messages">
