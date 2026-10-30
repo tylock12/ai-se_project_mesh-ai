@@ -126,10 +126,13 @@ export default function Chat() {
     setIsSending(true);
 
     try {
-      const res = await sendMessage(chatId, text);
-      const reply = res.data;
-      if (reply && activeChatIdRef.current === chatId) {
-        setMessages((prev) => [...prev, reply]);
+      const res = await sendMessage(activeChatId, text);
+      const saved = res.data;
+      if (saved) {
+        setMessages((prev) => [
+          ...prev.filter((msg) => msg._id !== userMessage._id),
+          ...saved,
+        ]);
       }
     } catch {
       if (activeChatIdRef.current === chatId) {
@@ -256,6 +259,11 @@ export default function Chat() {
                     <ReactMarkdown>{msg.content}</ReactMarkdown>
                   </li>
                 ))}
+                {isSending && (
+                  <li className="chat__message chat__message_assistant chat__message_thinking">
+                  Thinking...
+                  </li>
+                )}
               </ul>
             ) : (
               <p className="chat__no-messages">

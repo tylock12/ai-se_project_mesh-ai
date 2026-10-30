@@ -5,7 +5,7 @@ import Chunk from "../models/chunk.js";
 import Message from "../models/message.js";
 import { createEmbedding } from "../utils/embeddings.js";
 import { rankBySimilarity } from "../utils/vector-search.js";
-import { getClient, LLM_MODEL, buildContext } from "../utils/openai-client.js";
+import { getClient, LLM_MODEL, buildContext, stripThinking } from "../utils/openai-client.js";
 
 export const createMessage = async (
   req: Request,
@@ -58,8 +58,10 @@ export const createMessage = async (
       { role: "user", content: question },
     ],
   });
-  const answer = completion.choices[0]?.message?.content ?? "";
-
+const answer =
+  stripThinking(completion.choices[0]?.message?.content ?? "") ||
+  "No answer returned.";
+  
   const userMessage = await Message.create({
     chatId: chat._id,
     role: "user",

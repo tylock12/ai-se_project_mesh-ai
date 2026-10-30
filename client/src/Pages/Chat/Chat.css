@@ -123,6 +123,11 @@
   overflow-y: auto;
 }
 
+.chat__message_thinking {
+  opacity: 0.6;
+  font-style: italic;
+}
+
 .chat__no-messages {
   display: flex;
   text-align: center;
