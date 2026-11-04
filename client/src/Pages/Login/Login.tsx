@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import { getNavLinkClass } from "../../utils/navLinkClass";
 import { loginUser } from "../../utils/api";
@@ -10,6 +10,12 @@ export default function Login() {
   const { values, errors, isValid, handleChange } = useFormWithValidation();
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const from =
+   (location.state as { from?: { pathname: string } } | null)?.from
+    ?.pathname ?? "/knowledge";
+
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -22,7 +28,7 @@ export default function Login() {
       const res = await loginUser(values.email, values.password);
       if (res.data) {
         login(res.data.token, res.data.user);
-        navigate("/knowledge");
+        navigate(from, { replace: true });      
       }
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Login failed");
