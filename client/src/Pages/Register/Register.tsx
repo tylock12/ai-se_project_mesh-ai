@@ -40,7 +40,7 @@ export default function Register() {
 
           <nav className="form__nav">
             <NavLink to="/login" className={getNavLinkClass}>
-              Register
+              Login
             </NavLink>
             <NavLink to="/register" className={getNavLinkClass}>
               Register
