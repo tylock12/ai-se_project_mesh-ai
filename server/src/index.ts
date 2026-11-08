@@ -8,6 +8,9 @@ import morgan from "morgan";
 import { logger } from "./utils/logger.js";
 
 const app = express();
+
+app.set("trust proxy", 1);
+
 const port = process.env.PORT || 3000;
 
 app.use(
@@ -27,9 +30,6 @@ app.get("/health", (req, res): void => {
     data: { status: "ok" },
     error: null,
   });
-});
-app.get("/test-error", (_req, _res) => {
-  throw new Error("Test error");
 });
 
 app.use("/api", router);
