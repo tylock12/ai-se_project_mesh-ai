@@ -5,7 +5,7 @@ import Document from "../models/document.js";
 import Chunk from "../models/chunk.js";
 import { chunkText } from "../utils/chunk.js";
 import { createEmbedding } from "../utils/embeddings.js";
-import { getCacheValue, setCacheValue } from "../utils/cache.js";
+import { getCacheValue, setCacheValue, deleteCacheValue } from "../utils/cache.js";
 
 export const uploadDocument = async (
   req: Request,
@@ -40,16 +40,27 @@ export const uploadDocument = async (
     }),
   );
 
+  deleteCacheValue(`documents-list:${req.user!.userId}`);
+
   res.status(201).json({ success: true, data: document, error: null });
 };
 
-   export const getDocuments = async (
-     req: Request,
-     res: Response,
-   ): Promise<void> => {
-     const documents = await Document.find({ userId: req.user!.userId });
-     res.status(200).json({ success: true, data: documents, error: null });
-   };
+export const getDocuments = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const cacheKey = `documents-list:${req.user!.userId}`;
+  const cached = getCacheValue(cacheKey);
+  if (cached) {
+    res.status(200).json(cached);
+    return;
+  }
+
+  const documents = await Document.find({ userId: req.user!.userId });
+  const responseData = { success: true, data: documents, error: null };
+  setCacheValue(cacheKey, responseData, 30 * 1000);
+  res.status(200).json(responseData);
+};
 
 export const getDocumentById = (req: Request, res: Response): void => {
   res.status(200).json({ success: true, data: {}, error: null });
