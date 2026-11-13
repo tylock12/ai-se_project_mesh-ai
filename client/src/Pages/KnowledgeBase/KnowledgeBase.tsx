@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./KnowledgeBase.css";
 import UploadArea from "../../components/UploadArea/UploadArea";
 import type { KnowledgeDoc } from "../../utils/api";
-import { getDocuments, uploadDocument } from "../../utils/api";
+import { getDocuments, uploadDocument, deleteDocument } from "../../utils/api";
 
 
 export default function KnowledgeBase() {
@@ -10,8 +10,7 @@ export default function KnowledgeBase() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-
-  useEffect(() => {}, [documents]);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadDocuments = async () => {
@@ -44,6 +43,16 @@ export default function KnowledgeBase() {
   }
 };
 
+  const handleDelete = async (id: string) => {
+    setDeleteError(null);
+    try {
+      await deleteDocument(id);
+      setDocuments((prev) => prev.filter((doc) => doc._id !== id));
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Delete failed");
+    }
+  };
+
   return (
     <div className="knowledge-base">
       <h1>Manage Your Knowledge Base</h1>
@@ -60,6 +69,8 @@ export default function KnowledgeBase() {
           <p>No documents yet.</p>
         )}
 
+        {deleteError && <p className="knowledge-base__error">{deleteError}</p>}
+
         {!isLoading && !error && documents.length > 0 && (
           <ul className="knowledge-base__list">
             {documents.map((doc) => (
@@ -69,6 +80,7 @@ export default function KnowledgeBase() {
                   className="knowledge-base__delete"
                   type="button"
                   aria-label={`Delete ${doc.fileName}`}
+                  onClick={() => handleDelete(doc._id)}
                 >
                   ×
                 </button>
