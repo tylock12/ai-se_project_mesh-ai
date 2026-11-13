@@ -6,6 +6,7 @@ import Chunk from "../models/chunk.js";
 import { chunkText } from "../utils/chunk.js";
 import { createEmbedding } from "../utils/embeddings.js";
 import { getCacheValue, setCacheValue, deleteCacheValue } from "../utils/cache.js";
+import mongoose from "mongoose";
 
 export const uploadDocument = async (
   req: Request,
@@ -62,10 +63,63 @@ export const getDocuments = async (
   res.status(200).json(responseData);
 };
 
-export const getDocumentById = (req: Request, res: Response): void => {
-  res.status(200).json({ success: true, data: {}, error: null });
+export const getDocumentById = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { id } = req.params;
+
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: "Invalid document ID" },
+    });
+    return;
+  }
+
+  const document = await Document.findOne({ _id: id, userId: req.user!.userId });
+  if (!document) {
+    res.status(404).json({
+      success: false,
+      data: null,
+      error: { message: "Document not found" },
+    });
+    return;
+  }
+
+  res.status(200).json({ success: true, data: document, error: null });
 };
 
-export const deleteDocument = (req: Request, res: Response): void => {
-  res.status(204).end();
+export const deleteDocument = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { id } = req.params;
+  const userId = req.user!.userId;
+
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: "Invalid document ID" },
+    });
+    return;
+  }
+
+  const doc = await Document.findOne({ _id: id, userId });
+  if (!doc) {
+    res.status(404).json({
+      success: false,
+      data: null,
+      error: { message: "Document not found" },
+    });
+    return;
+  }
+
+  await Chunk.deleteMany({ documentId: doc._id });
+  await Document.deleteOne({ _id: doc._id });
+  deleteCacheValue(`documents-list:${userId}`);
+
+  res.status(200).json({ success: true, data: null, error: null });
 };

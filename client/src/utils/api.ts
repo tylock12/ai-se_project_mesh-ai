@@ -68,6 +68,12 @@ export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
   return request<KnowledgeDoc[]>(`${BASE_URL}/documents`);
 };
 
+export const deleteDocument = async (
+  id: string,
+): Promise<ApiResponse<null>> => {
+  return request<null>(`${BASE_URL}/documents/${id}`, { method: "DELETE" });
+};
+
 export const uploadDocument = async (
   file: File,
 ): Promise<ApiResponse<KnowledgeDoc>> => {
