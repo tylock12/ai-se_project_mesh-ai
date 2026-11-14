@@ -32,7 +32,7 @@ app.get("/health", (req, res): void => {
   });
 });
 
-app.use("/api", router);
+app.use(router);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
